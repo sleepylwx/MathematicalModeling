@@ -16,17 +16,17 @@ public class CarSchedule {
 
 
         List<Car> queue = new LinkedList<>();
-        List<Car> list = new ArrayList<>();
+
         int carId = 1;
         int startTime = SIX;
         int endTime = TWENTY_THIRTY;
         int curTime = SIX;
         queue.add(new Car(carId++,SIX,getRestTime(SIX),getRestTime(SIX)));
         Car temp2 = queue.get(0);
-//        System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
-//            curTime%60,temp2.endTime/3600,temp2.endTime/60%60,temp2.endTime%60,temp2.num,temp2.totalTime/3600,temp2.totalTime/60%60,
-//            temp2.totalTime%60);
-        list.add(temp2);
+        System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
+            curTime%60,temp2.endTime/3600,temp2.endTime/60%60,temp2.endTime%60,temp2.num,temp2.totalTime/3600,temp2.totalTime/60%60,
+            temp2.totalTime%60);
+
         for(int i = 0 ; i < queue.size();++i){
 
             queue.get(i).restTime -=getSubTime(SIX);
@@ -70,7 +70,7 @@ public class CarSchedule {
                 queue.add(temp1);
             }
 
-            list.add(temp1);
+
             Collections.sort(queue, new Comparator<Car>(){
 
 
@@ -80,9 +80,9 @@ public class CarSchedule {
                     return o1.endTime - o2.endTime;
                 }
             });
-//            System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
-//            curTime%60,temp1.endTime/3600,temp1.endTime/60%60,temp1.endTime%60,temp1.num,temp1.totalTime/3600,temp1.totalTime/60%60,
-//            temp1.totalTime%60);
+            System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
+            curTime%60,temp1.endTime/3600,temp1.endTime/60%60,temp1.endTime%60,temp1.num,temp1.totalTime/3600,temp1.totalTime/60%60,
+            temp1.totalTime%60);
 
             for(int i = 0 ; i < queue.size();++i){
 
@@ -90,13 +90,7 @@ public class CarSchedule {
             }
         }
 
-        for(int i = 0; i < list.size();++i){
 
-            Car temp1 = list.get(i);
-            System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d,%d\n",(temp1.startTime/3600),temp1.startTime/60 % 60,
-                    curTime%60,temp1.endTime/3600,temp1.endTime/60%60,temp1.endTime%60,temp1.num,temp1.totalTime/3600,temp1.totalTime/60%60,
-                    temp1.totalTime%60,temp1.count+1);
-        }
     }
 
     public static int getCurTime(int curTime){
