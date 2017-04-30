@@ -1,9 +1,13 @@
-import java.util.*;
 
-/**
- * Created by 36249 on 2017/4/30.
- */
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class CarSchedule {
+
 
 
     public static final int SIX = 6* 60*60;
@@ -15,7 +19,7 @@ public class CarSchedule {
 
 
 
-        List<Car> queue = new LinkedList<>();
+        LinkedList<Car> queue = new LinkedList<Car>();
 
         int carId = 1;
         int startTime = SIX;
@@ -23,9 +27,9 @@ public class CarSchedule {
         int curTime = SIX;
         queue.add(new Car(carId++,SIX,getRestTime(SIX),getRestTime(SIX)));
         Car temp2 = queue.get(0);
-        System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
-            curTime%60,temp2.endTime/3600,temp2.endTime/60%60,temp2.endTime%60,temp2.num,temp2.totalTime/3600,temp2.totalTime/60%60,
-            temp2.totalTime%60);
+        System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d,%d\n",(curTime/3600),curTime/60 % 60,
+                curTime%60,temp2.endTime/3600,temp2.endTime/60%60,temp2.endTime%60,temp2.num,temp2.totalTime/3600,temp2.totalTime/60%60,
+                temp2.totalTime%60,temp2.stopCount);
 
         for(int i = 0 ; i < queue.size();++i){
 
@@ -51,6 +55,17 @@ public class CarSchedule {
             Car temp = queue.get(0);
             Car temp1;
 
+            int stopCount = 0;
+            List<Car> cars = new ArrayList<Car>();
+            for(int i = 0; i < queue.size(); ++i){
+
+                if(queue.get(i).endTime < curTime){
+
+                    ++stopCount;
+                    cars.add(queue.get(i));
+                }
+            }
+
             if(temp.restTime <= 0 && temp.count < 10){
 
                 temp1 = temp;
@@ -71,6 +86,9 @@ public class CarSchedule {
             }
 
 
+
+            temp1.stopCount = stopCount;
+
             Collections.sort(queue, new Comparator<Car>(){
 
 
@@ -80,10 +98,15 @@ public class CarSchedule {
                     return o1.endTime - o2.endTime;
                 }
             });
-            System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d\n",(curTime/3600),curTime/60 % 60,
-            curTime%60,temp1.endTime/3600,temp1.endTime/60%60,temp1.endTime%60,temp1.num,temp1.totalTime/3600,temp1.totalTime/60%60,
-            temp1.totalTime%60);
+            System.out.printf("%02d:%02d:%02d,%02d:%02d:%02d,%d,%02d:%02d:%02d,%d,",(curTime/3600),curTime/60 % 60,
+                    curTime%60,temp1.endTime/3600,temp1.endTime/60%60,temp1.endTime%60,temp1.num,temp1.totalTime/3600,temp1.totalTime/60%60,
+                    temp1.totalTime%60,temp1.stopCount);
 
+            for(int i = 0 ; i < cars.size(); ++i){
+
+                System.out.printf("%d ", cars.get(i).num);
+            }
+            System.out.println();
             for(int i = 0 ; i < queue.size();++i){
 
                 queue.get(i).restTime -=getSubTime(curTime);
@@ -174,6 +197,7 @@ public class CarSchedule {
         int totalTime;
         int count;
         int kind;
+        int stopCount;
         public Car(int num,int startTime,int restTime,int totalTime){
 
             this.num = num;
@@ -183,7 +207,7 @@ public class CarSchedule {
             this.endTime = this.startTime + restTime;
             count = 0;
             kind = 0;
+            stopCount = 0;
         }
     }
-
 }
