@@ -1,4 +1,4 @@
-package fiveone;
+package 一七年五一赛A题;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
